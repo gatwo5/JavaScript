@@ -28,13 +28,14 @@
         let numeroAleatorio;
         let numeroIntroducido;
         let contadorIntentos;
-        seguirJugando = true;
-        numeroAdivinado = false;
+        let seguirJugando = true;
+        let numeroAdivinado = false;
         
         while (seguirJugando) {
 
             numeroAleatorio = parseInt(Math.random()*100+1);
             contadorIntentos = 0;
+            numeroAdivinado = false;
 
             while (!numeroAdivinado) {
                 
