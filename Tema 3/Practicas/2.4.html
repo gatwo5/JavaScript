@@ -29,35 +29,58 @@
         let numeroIntroducido;
         let contadorIntentos;
         let seguirJugando = true;
-        let numeroAdivinado = false;
         
         while (seguirJugando) {
 
             numeroAleatorio = parseInt(Math.random()*100+1);
             contadorIntentos = 0;
-            numeroAdivinado = false;
+            let numeroAdivinado = false;
+            let ventanaCancelada = false;
+            let noEsNumero = false;
 
-            while (!numeroAdivinado) {
+            while (!numeroAdivinado && !ventanaCancelada) {
                 
-                numeroIntroducido = prompt("Introduce un número");
-                contadorIntentos++;
+                noEsNumero = false;
+                numeroIntroducido = prompt(`Introduce un número del 1 al 100.`);
 
-                if (numeroIntroducido > numeroAleatorio) {
-                    alert("El número es más pequeño");                    
+                //gestionar errores
+                if (numeroIntroducido === null) {
+                    ventanaCancelada = true;  
+                    break;
                 }
 
-                else if (numeroIntroducido < numeroAleatorio) {
-                    alert("El número es más grande");                    
-                }
+                numeroIntroducido = parseInt(numeroIntroducido);
 
-                else {
-                    numeroAdivinado = true;
+                if (isNaN(numeroIntroducido)) {
+                    alert("ERROR, solo se pueden introducir números.");
+                    noEsNumero = true;
                 }
+                
+                //lógica de número mayor, menor o igual
+                if (!noEsNumero) {
+                    if (numeroIntroducido > numeroAleatorio) {
+                        alert("El número es más pequeño");     
+                    }
 
+                    else if (numeroIntroducido < numeroAleatorio) {
+                        alert("El número es más grande");
+                    }
+
+                    else {
+                        numeroAdivinado = true;
+                    }
+
+                    contadorIntentos++;
+                }
             }
 
-            alert(`El número era ${numeroAleatorio} y lo has adivinado en ${contadorIntentos} intentos`);
+            if (!ventanaCancelada) {
+                alert(`El número era ${numeroAleatorio} y lo has adivinado en ${contadorIntentos} intentos`);
+            }
 
+            else {
+                alert(`Ventana cancelada. El juego ha finalizado`);
+            }
             seguirJugando = confirm("Quieres jugar otra vez?");
         }
        
