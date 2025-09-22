@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,th, td {
+            border-collapse: collapse;
+            border: solid;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<!--
+    Tabla de códigos unicode
+    -Crear una página que muestre los primeros 10000 símbolos de la tabla Unicode.
+    -Se mostrará en una tabla en la que en cada fila se indica el número de código, segudio del carácter de ese código.
+    -En cada fila se mostrarán 10 símbolos.
+-->
+<body>
+
+    <script>
+
+        document.write("<table>");
+
+        let char;
+        let i = 1;
+        
+        while (i <= 10000) {
+
+            document.write("<tr>");
+
+            for (let j = 1; j <= 10; j++) {
+
+                char = String.fromCharCode(i);
+
+                document.write(`<th> ${i} </th> <td> ${char} </td>` );
+
+                i++;
+            }
+
+            document.write("</tr>");
+
+        }
+
+        document.write("</table>");
+
+    </script>
+</body>
+</html>
+
