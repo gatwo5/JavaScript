@@ -4,8 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de errores</title>
+    <style>
+
+    </style>
 </head>
 <body>
     
+    <div class = "edicion">
+
+        <h2>Edición</h2>
+        
+        <p>Asunto</p>
+        <input id = "asunto" type="text" maxlength="10" placeholder="máx. 10 caracteres">
+
+        <p>Fecha</p>
+        <input id = "fecha" type="date">
+
+        <p>Cantidad</p>
+        <input id = "cantidad" type="number" placeholder="0.00">
+
+        <p>Tipo</p>
+        <select id = "tipo">
+            <option value="Empresas">Empresas</option>
+            <option value="Particulares">Particulares</option>
+        </select>
+        
+        <button type="submit">Añadir/Actualizar</button>
+    </div>
+
+    <div class = "facturas">
+
+        <h2>Facturas</h2>
+
+        <p>Lista de facturas</p>
+
+        <select id = "listaDeFacturas" size="3">
+
+        </select>
+
+        <input type="button" value="Editar">
+        <input type="button" value="Eliminar">
+
+        <p>Mensajes</p>
+        <p id="mensajes">0 facturas(s)</p>
+    </div>
 </body>
 </html>
