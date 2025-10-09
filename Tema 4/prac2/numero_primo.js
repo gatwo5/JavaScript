@@ -1,4 +1,12 @@
-console.log(numero_primo(5));
+let html = '';
+
+for (let i = 1; i <= 1000; i++) {
+    if (numero_primo(i)) {
+        html += `${i} - `;
+    }    
+}
+
+document.getElementById("numprimo").innerHTML += html;
 
 function numero_primo(numero) {
     let es_primo = true;
@@ -16,8 +24,6 @@ function numero_primo(numero) {
     if (contador_divisores > 2 || numero == 1) {
         es_primo = false;
     }
-
-    console.log(contador_divisores);
 
     return es_primo;
 }
