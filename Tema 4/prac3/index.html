@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libros</title>
+</head>
+<body>
+    <!-- Diseña una aplicación web con las siguientes características:
+
+    Un formulario con tres campos:
+
+    Título del libro
+    Autor
+    Año de publicación
+    Un botón Guardar que:
+
+    Valide que el título no esté vacío.
+    Guarde la información del libro en una colección (Set o Map).
+    Un botón Mostrar libros que:
+
+    Recorra la colección.
+    Muestre en pantalla todos los libros registrados, ordenados por título.-->
+
+    <h1>Libros</h1>
+
+    <form id="libros-form">
+
+        <label for="titulo">Titulo</label>
+        <input id="titulo" type="text">
+        <br>
+
+        <label for="autor">Autor</label>
+        <input id="autor" type="text">
+        <br>
+
+        <label for="anno">Año</label>
+        <input id="anno" type="number">
+        <br>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <button id="mostrar">Mostrar</button>
+
+    <ul id="lista"></ul>
+
+    <script src="app.js"></script>
+</body>
+</html>
