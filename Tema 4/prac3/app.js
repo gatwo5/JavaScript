@@ -26,8 +26,9 @@ mostrarBtn.addEventListener("click", () => {
     lista.innerHTML = "";
 
     const libros_ordenados = [...libros.values()].sort((a,b) =>
-        a.titulo.localCompare(b.titulo)
+        a.titulo.localeCompare(b.titulo)
     );
+
 
     for (const c of libros_ordenados) {
         const li = document.createElement("li");
