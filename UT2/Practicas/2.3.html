@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo salario</title>
+</head>
+<body>
+    
+    <p>Introduce tu nombre:</p>
+    <input type="text" id="nombre">
+
+    <p>Introduce tu apellido:</p>
+    <input type="text" id="apellido">
+
+    <p>Introduce tu salario:</p>
+    <input type="number" id="salario">
+
+    <p>Introduce tu edad:</p>
+    <input type="number" id="edad">
+
+    <br>
+    <button type="submit" onclick=calcSal()>Enviar</button>
+
+    <h3>Resultado:</h3>
+    <div id="resultado"></div>
+
+    <script>
+
+        function calcSal() {
+
+            const nombre = document.getElementById("nombre").value;
+            const apellido = document.getElementById("apellido").value;
+            const edad = parseInt(document.getElementById("edad").value);
+            var salario = parseFloat(document.getElementById("salario").value);
+
+            if (salario < 1000) {
+
+                if (edad < 30) 
+                    salario = 1100;             
+                else if (edad >= 30 && edad <= 45) 
+                    salario = salario + salario * 0.03;
+                else
+                    salario = salario + salario * 0.15;
+
+            }
+
+            else if (salario >= 1000 && salario <= 2000) {
+
+                if (edad > 45) 
+                    salario = salario + salario * 0.03;
+                else
+                    salario = salario + salario * 0.10;
+
+            }
+
+            document.getElementById("resultado").innerHTML = `
+                <p><strong>Nombre:</strong> ${nombre}</p>
+                <p><strong>Apellido:</strong> ${apellido}</p>
+                <p><strong>Edad:</strong> ${edad} años</p>
+                <p><strong>Salario final:</strong> €${salario.toFixed(2)}</p>
+            `;
+
+        }
+    </script>
+</body>
+</html>
+
