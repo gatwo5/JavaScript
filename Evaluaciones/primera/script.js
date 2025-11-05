@@ -43,6 +43,7 @@ function agregarFactura() {
     let recorrerFactura = 0;
     let asuntoNoExiste = true;
     let factura;
+    let error = false;
 
     // Validar asunto
 
@@ -64,6 +65,14 @@ function agregarFactura() {
             facturas.push(factura);
             actualizar_lista_facturas(factura);
         }
+    }
+
+    else {
+        error = true;
+    }
+
+    if (!asuntoNoExiste || error) {
+        
     }
 
 }
