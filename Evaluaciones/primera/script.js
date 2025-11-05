@@ -48,7 +48,7 @@ function agregarFactura() {
 
     if (expresionRegularAsunto.test(asunto)) {
 
-        while (recorrerFactura <= facturas.length && asuntoNoExiste && !factura === undefined) {
+        while (recorrerFactura < facturas.length && asuntoNoExiste) {
 
             if (facturas[recorrerFactura].getAsunto() == asunto) {
                 asuntoNoExiste = false;
@@ -62,10 +62,10 @@ function agregarFactura() {
         if (asuntoNoExiste) {
             factura = new Factura(asunto, fecha, cantidad, tipo);
             facturas.push(factura);
+            actualizar_lista_facturas(factura);
         }
     }
 
-    actualizar_lista_facturas(factura);
 }
 
 function actualizar_lista_facturas(factura) {
