@@ -18,10 +18,10 @@
         <input id = "asunto" type="text" maxlength="10" placeholder="máx. 10 caracteres">
 
         <p>Fecha</p>
-        <input id = "fecha" type="date">
+        <input id = "fecha" type="date" min="2000-01-01">
 
         <p>Cantidad</p>
-        <input id = "cantidad" type="number" placeholder="0.00">
+        <input id = "cantidad" type="number" min="0" placeholder="0.00">
 
         <p>Tipo</p>
         <select id = "tipo">
@@ -42,7 +42,7 @@
         </select>
 
         <input type="button" value="Editar">
-        <input type="button" value="Eliminar">
+        <input type="button" value="Eliminar" onclick="eliminar_factura()">
 
         <p>Mensajes</p>
         <p id="mensajes">0 facturas(s)</p>

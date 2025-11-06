@@ -21,6 +21,14 @@ class Factura {
     getAsunto() {
         return this.asunto;
     }
+
+    getTipo() {
+        return this.tipo;
+    }
+
+    toString() {
+        return this.asunto + ':' + this.fecha + ':' + this.cantidad + ':' + this.tipo;
+    }
 }
 
 // --- FUNCIONES ---
@@ -66,6 +74,7 @@ function agregarFactura() {
             factura = new Factura(asunto, fecha, cantidad, tipo);
             facturas.push(factura);
             actualizar_lista_facturas(factura);
+            guardar_Preferencia_Tipo(tipo);
         }
     }
 
@@ -80,10 +89,41 @@ function agregarFactura() {
 }
 
 function actualizar_lista_facturas(factura) {
-    LISTA_DE_FACTURAS.innerHTML += '<option value="' + factura.getAsunto() + '">' + factura.getAsunto() + '</option>';
+    LISTA_DE_FACTURAS.innerHTML += '<option value="' + factura.getAsunto() + '">' + factura.toString() + '</option>';
     MENSAJES.innerHTML = facturas.length + ' factura(s)';
 }
 
 function enviar_error(mensajeError) {
     MENSAJES.innerHTML = mensajeError;
 }
+
+// eliminar_Factura().
+
+function eliminar_Factura() {
+
+}
+
+// cookies
+
+function guardar_Preferencia_Tipo(tipo) {
+    document.cookie = `tipo=${tipo}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`; 
+}
+
+function leerCookie(nombre) {
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+        const [clave, valor] = cookie.split("=");
+        if (clave === nombre) {
+            return valor;
+        }
+    }
+    return null;
+}
+
+window.addEventListener("load", function() {
+    const tipoGuardado = leerCookie("tipo");
+    if (tipoGuardado) {
+        const selectTipo = document.getElementById("tipo");
+        selectTipo.value = tipoGuardado;
+    }
+});
