@@ -1,58 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de errores</title>
-    <style>
-
-    </style>
+    <title>Control de errores - Gestión de facturas</title>
 </head>
 <body>
-    
-    <div class = "edicion">
-
+    <div class="edicion">
         <h2>Edición</h2>
-        
         <p>Asunto</p>
-        <input id = "asunto" type="text" maxlength="10" placeholder="máx. 10 caracteres">
+        <input id="asunto" type="text" maxlength="10" placeholder="máx. 10 caracteres">
 
-        <p>Fecha</p>
-        <input id = "fecha" type="date" min="2000-01-01">
 
-        <p>Cantidad</p>
-        <input id = "cantidad" type="number" min="0" placeholder="0.00">
+    <p>Fecha</p>
+    <input id="fecha" type="date" min="2000-01-01">
 
-        <p>Tipo</p>
-        <select id = "tipo">
-            <option value="Empresas">Empresas</option>
-            <option value="Particulares">Particulares</option>
-        </select>
-        
-        <button type="submit" onclick=agregarFactura()>Añadir/Actualizar</button>
-    </div>
+    <p>Cantidad</p>
+    <input id="cantidad" type="number" min="0" step="0.01" placeholder="0.00">
 
-    <div class = "facturas">
+    <p>Tipo</p>
+    <select id="tipo">
+        <option value="Empresas">Empresas</option>
+        <option value="Particulares">Particulares</option>
+    </select>
 
-        <h2>Facturas</h2>
+    <button onclick="agregarFactura()">Añadir/Actualizar</button>
+</div>
 
-        <p>Lista de facturas</p>
+<div class="facturas">
+    <h2>Facturas</h2>
+    <p>Lista de facturas</p>
+    <select id="listaDeFacturas" size="4"></select>
 
-        <select id = "listaDeFacturas" size="3">
-        </select>
+    <input type="button" value="Editar" onclick="editarFactura()">
+    <input type="button" value="Eliminar" onclick="eliminarFactura()">
 
-        <input type="button" value="Editar">
-        <input type="button" value="Eliminar" onclick="eliminar_factura()">
+    <p>Mensajes</p>
+    <p id="mensajes">0 factura(s)</p>
 
-        <p>Mensajes</p>
-        <p id="mensajes">0 facturas(s)</p>
+    <p>Contador de errores: <span id="errores">0</span></p>
+</div>
 
-        <br>
+<script>
+    // --- VARIABLES GLOBALES ---
+    let facturas = [];
+    let contadorErrores = 0;
+    const LISTA_DE_FACTURAS = document.getElementById("listaDeFacturas");
+    const MENSAJES = document.getElementById("mensajes");
 
-        Contador de errores:
-        <p id="errores"></p>
-    </div>
+    // --- CLASE FACTURA ---
+    class Factura {
+        constructor(asunto, fecha, cantidad, tipo) {
+            this.asunto = asunto;
+            this.fecha = fecha;
+            this.cantidad = cantidad;
+            this.tipo = tipo;
+        }
+        getAsunto() { return this.asunto; }
+        toString() { return `${this.asunto}:${this.fecha}:${this.cantidad}:${this.tipo}`; }
+    }
+
+    // --- FUNCIONES ---
+
+    function agregarFactura() {
+        const asunto = document.getElementById("asunto").value.trim();
+        const fecha = document.getElementById("fecha").value;
+        const cantidad = parseFloat(document.getElementById("cantidad").value);
+        const tipo = document.getElementById("tipo").value;
+
+        const regexAsunto = /^[A-Z][A-Za-z0-9 ]{0,9}$/;
+        let mensajeError = "";
+
+        // Validaciones
+        if (!regexAsunto.test(asunto)) {
+            mensajeError = "Asunto inválido (debe empezar por mayúscula, máx. 10 caracteres)";
+        } else if (!fecha || new Date(fecha) < new Date("2000-01-01")) {
+            mensajeError = "Fecha no válida (mínimo 01/01/2000)";
+        } else if (isNaN(cantidad) || cantidad < 0) {
+            mensajeError = "Cantidad no válida (debe ser >= 0)";
+        }
+
+        // Mostrar error si lo hay
+        if (mensajeError) {
+            enviar_error(mensajeError);
+            return;
+        }
+
+        // Verificar si ya existe una factura con el mismo asunto
+        const indiceExistente = facturas.findIndex(f => f.getAsunto() === asunto);
+
+        if (indiceExistente === -1) {
+            // Nueva factura
+            const factura = new Factura(asunto, fecha, cantidad, tipo);
+            facturas.push(factura);
+            actualizar_lista_facturas();
+            MENSAJES.innerHTML = `${facturas.length} factura(s)`;
+        } else {
+            // Actualizar factura existente
+            facturas[indiceExistente] = new Factura(asunto, fecha, cantidad, tipo);
+            actualizar_lista_facturas();
+            MENSAJES.innerHTML = `Factura "${asunto}" actualizada`;
+        }
+
+        guardar_Preferencia_Tipo(tipo);
+    }
+
+    function actualizar_lista_facturas() {
+        LISTA_DE_FACTURAS.innerHTML = "";
+        facturas.forEach(f => {
+            const option = document.createElement("option");
+            option.value = f.getAsunto();
+            option.textContent = f.toString();
+            LISTA_DE_FACTURAS.appendChild(option);
+        });
+    }
+
+    function editarFactura() {
+        const seleccion = LISTA_DE_FACTURAS.selectedIndex;
+        if (seleccion === -1) {
+            enviar_error("Debe seleccionar una factura para editar");
+            return;
+        }
+        const factura = facturas[seleccion];
+        document.getElementById("asunto").value = factura.asunto;
+        document.getElementById("fecha").value = factura.fecha;
+        document.getElementById("cantidad").value = factura.cantidad;
+        document.getElementById("tipo").value = factura.tipo;
+        MENSAJES.innerHTML = `Editando factura "${factura.asunto}"`;
+    }
+
+    function eliminarFactura() {
+        const seleccion = LISTA_DE_FACTURAS.selectedIndex;
+        if (seleccion === -1) {
+            enviar_error("Debe seleccionar una factura para eliminar");
+            return;
+        }
+        facturas.splice(seleccion, 1);
+        actualizar_lista_facturas();
+        MENSAJES.innerHTML = `${facturas.length} factura(s)`;
+    }
+
+    // --- MANEJO DE ERRORES Y COOKIES ---
+
+    function enviar_error(msg) {
+        MENSAJES.innerHTML = msg;
+        contadorErrores++;
+        document.getElementById("errores").textContent = contadorErrores;
+        actualizar_errores();
+    }
+
+    function guardar_Preferencia_Tipo(tipo) {
+        document.cookie = `tipo=${tipo}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
+    }
+
+    function actualizar_errores() {
+        document.cookie = `errores=${contadorErrores}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
+    }
+
+    function leerCookie(nombre) {
+        const cookies = document.cookie.split("; ");
+        for (const cookie of cookies) {
+            const [clave, valor] = cookie.split("=");
+            if (clave === nombre) return valor;
+        }
+        return null;
+    }
+
+    window.addEventListener("load", () => {
+        const tipoGuardado = leerCookie("tipo");
+        const erroresGuardado = leerCookie("errores");
+
+        if (tipoGuardado) document.getElementById("tipo").value = tipoGuardado;
+        if (erroresGuardado) {
+            contadorErrores = parseInt(erroresGuardado);
+            document.getElementById("errores").textContent = erroresGuardado;
+        }
+    });
+</script>
 </body>
 </html>
-
-<script src="script.js"></script>
