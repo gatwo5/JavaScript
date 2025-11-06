@@ -1,6 +1,7 @@
 // Variables globales
 
 var facturas = [];
+var contadorErrores = 0;
 const LISTA_DE_FACTURAS = document.getElementById('listaDeFacturas');
 const MENSAJES = document.getElementById('mensajes');
 
@@ -95,6 +96,12 @@ function actualizar_lista_facturas(factura) {
 
 function enviar_error(mensajeError) {
     MENSAJES.innerHTML = mensajeError;
+    const selectErrores = document.getElementById("errores");
+
+    contadorErrores++;
+    selectErrores.innerHTML = contadorErrores;
+    
+    actualizar_errores();
 }
 
 // eliminar_Factura().
@@ -107,6 +114,10 @@ function eliminar_Factura() {
 
 function guardar_Preferencia_Tipo(tipo) {
     document.cookie = `tipo=${tipo}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`; 
+}
+
+function actualizar_errores() {
+    document.cookie = `errores=${contadorErrores}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
 }
 
 function leerCookie(nombre) {
@@ -122,8 +133,15 @@ function leerCookie(nombre) {
 
 window.addEventListener("load", function() {
     const tipoGuardado = leerCookie("tipo");
+    const erroresGuardado = leerCookie("errores");
+
     if (tipoGuardado) {
         const selectTipo = document.getElementById("tipo");
         selectTipo.value = tipoGuardado;
+    }
+
+    if (erroresGuardado) {
+        const selectErrores = document.getElementById("errores");
+        selectErrores.innerHTML = erroresGuardado;
     }
 });
