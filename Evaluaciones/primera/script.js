@@ -1,6 +1,8 @@
-// Main
+// Variables globales
 
 var facturas = [];
+const LISTA_DE_FACTURAS = document.getElementById('listaDeFacturas');
+const MENSAJES = document.getElementById('mensajes');
 
 // --- class Factura ---
 
@@ -72,14 +74,16 @@ function agregarFactura() {
     }
 
     if (!asuntoNoExiste || error) {
-        
+        enviar_error('Asunto no valido');
     }
 
 }
 
 function actualizar_lista_facturas(factura) {
+    LISTA_DE_FACTURAS.innerHTML += '<option value="' + factura.getAsunto() + '">' + factura.getAsunto() + '</option>';
+    MENSAJES.innerHTML = facturas.length + ' factura(s)';
+}
 
-    const LISTA_DE_FACTURAS = document.getElementById('listaDeFacturas');
-
-    LISTA_DE_FACTURAS.innerHTML += '<option>' + factura.getAsunto() + '</option>';
+function enviar_error(mensajeError) {
+    MENSAJES.innerHTML = mensajeError;
 }
