@@ -51,17 +51,25 @@
 
     // --- CLASE FACTURA ---
     class Factura {
+
+        // Constructor
+
         constructor(asunto, fecha, cantidad, tipo) {
             this.asunto = asunto;
             this.fecha = fecha;
             this.cantidad = cantidad;
             this.tipo = tipo;
         }
+
+        // Metodos
+        
         getAsunto() { return this.asunto; }
         toString() { return `${this.asunto}:${this.fecha}:${this.cantidad}:${this.tipo}`; }
     }
 
     // --- FUNCIONES ---
+
+    // agregarFactura(). Funcion que agrega una factura
 
     function agregarFactura() {
         const asunto = document.getElementById("asunto").value.trim();
@@ -69,7 +77,9 @@
         const cantidad = parseFloat(document.getElementById("cantidad").value);
         const tipo = document.getElementById("tipo").value;
 
+        // Expresion regular
         const regexAsunto = /^[A-Z][A-Za-z0-9 ]{0,9}$/;
+
         let mensajeError = "";
 
         // Validaciones
@@ -106,6 +116,8 @@
         guardar_Preferencia_Tipo(tipo);
     }
 
+    // actualizar_lista_factura(). Funcion que recorre todo el array de facturas para actualizar la lista en pantalla
+
     function actualizar_lista_facturas() {
         LISTA_DE_FACTURAS.innerHTML = "";
         facturas.forEach(f => {
@@ -116,12 +128,20 @@
         });
     }
 
+    // editarFactura(). Funcion para editar una factura ya seleccionada de la lista
+
     function editarFactura() {
         const seleccion = LISTA_DE_FACTURAS.selectedIndex;
+
+        // En caso de no seleccionar nada
+
         if (seleccion === -1) {
             enviar_error("Debe seleccionar una factura para editar");
             return;
         }
+
+        // Edicion
+
         const factura = facturas[seleccion];
         document.getElementById("asunto").value = factura.asunto;
         document.getElementById("fecha").value = factura.fecha;
@@ -130,18 +150,28 @@
         MENSAJES.innerHTML = `Editando factura "${factura.asunto}"`;
     }
 
+    // eliminarFactura(). Funcion que elimina la factura seleccionada de la lista
+
     function eliminarFactura() {
         const seleccion = LISTA_DE_FACTURAS.selectedIndex;
+
+        // En caso de no seleccionar nada
+
         if (seleccion === -1) {
             enviar_error("Debe seleccionar una factura para eliminar");
             return;
         }
+
+        // Eliminacion
+
         facturas.splice(seleccion, 1);
         actualizar_lista_facturas();
         MENSAJES.innerHTML = `${facturas.length} factura(s)`;
     }
 
     // --- MANEJO DE ERRORES Y COOKIES ---
+
+    // enviar_error(msg). Funcion que recibe el mensaje de error y lo imprime por pantalla
 
     function enviar_error(msg) {
         MENSAJES.innerHTML = msg;
@@ -150,13 +180,18 @@
         actualizar_errores();
     }
 
+    // guardar_Preferencia_Tipo(). Funcion que recibe el tipo de factura para precargar el valor empresas/particulares al recargar la pagina
+
     function guardar_Preferencia_Tipo(tipo) {
         document.cookie = `tipo=${tipo}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
     }
 
+    // actualizar_errores(). Funcion que actualiza el contador de errores de cookies
     function actualizar_errores() {
         document.cookie = `errores=${contadorErrores}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
     }
+
+    // leerCookie(nombre). Funcion para buscar el nombre de una cookie y asi devolver su valor.
 
     function leerCookie(nombre) {
         const cookies = document.cookie.split("; ");
@@ -166,6 +201,8 @@
         }
         return null;
     }
+
+    // Al recargar la pagina se cargan las cookies
 
     window.addEventListener("load", () => {
         const tipoGuardado = leerCookie("tipo");

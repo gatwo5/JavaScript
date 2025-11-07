@@ -94,13 +94,15 @@ function actualizar_lista_facturas(factura) {
     MENSAJES.innerHTML = facturas.length + ' factura(s)';
 }
 
+// enviar_error(mensajeError). Recibe el mensaje de error a introducir y lo agrega al html
+
 function enviar_error(mensajeError) {
     MENSAJES.innerHTML = mensajeError;
     const selectErrores = document.getElementById("errores");
 
     contadorErrores++;
     selectErrores.innerHTML = contadorErrores;
-    
+
     actualizar_errores();
 }
 
@@ -112,13 +114,17 @@ function eliminar_Factura() {
 
 // cookies
 
+// guardar_Preferencia_Tipo(). Guardar la cookie del tipo
 function guardar_Preferencia_Tipo(tipo) {
     document.cookie = `tipo=${tipo}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`; 
 }
 
+// actualizar_errores(). Guardar la cookie de los errores
 function actualizar_errores() {
     document.cookie = `errores=${contadorErrores}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
 }
+
+// leerCookie(nombre). Recibe el nombre de la cookie a buscar y devuelve el valor si la encuentra
 
 function leerCookie(nombre) {
     const cookies = document.cookie.split("; ");
@@ -130,6 +136,8 @@ function leerCookie(nombre) {
     }
     return null;
 }
+
+// Siempre que se recarga la página las cookies aplican su valor al documento
 
 window.addEventListener("load", function() {
     const tipoGuardado = leerCookie("tipo");
