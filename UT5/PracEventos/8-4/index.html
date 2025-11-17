@@ -1,0 +1,51 @@
+<!--
+Practica 8-4:
+
+Mostrar un contador de velocidad. 
+Al presionar la flecha hacia arriba incrementará este contador, siendo el máximo 120.
+Al presionar la flecha hacia abajo decrementará este contador, siendo el mínimo 0.
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    
+    <p id="texto">0</p>
+
+</body>
+</html>
+
+
+
+<script>
+    const cont = document.getElementById("texo");
+    const contador = cont.getHTML;
+
+    addEventListener("keydown", (e) => {
+        switch(e.key) {
+            case '38':
+
+                if (contador!=120) {
+                    contador++;
+                }
+
+            break;
+
+            case '40':
+
+                if (contador!=0) {
+                    contador--;
+                }
+
+            break;
+        }
+
+        cont.innerHTML = contador;
+    })
+</script>
