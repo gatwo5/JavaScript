@@ -34,8 +34,15 @@ document.addEventListener("mouseout", function(e) {
 
 document.body.addEventListener("mousedown", function(e) {
     if (e.target.tagName === "DIV") {
-        e.target.style.backgroundColor = "#F29559";
-        e.target.style.width = '10%';
+
+        if(e.button==0) {
+            e.target.style.backgroundColor = "#F29559";
+            e.target.style.width = '10%';
+        }
+
+        else if(e.button==1) {
+            e.target.remove();
+        }
     }
 });
 
