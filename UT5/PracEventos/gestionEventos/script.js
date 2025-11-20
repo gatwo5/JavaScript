@@ -20,8 +20,28 @@ botonTarjeta.addEventListener('click', function() {
 
 // EVENTLISTENERS DE LAS TARJETAS 
 
-document.body.addEventListener("click", function(e) {
+document.addEventListener("mouseover", function(e) {
     if (e.target.tagName === "DIV") {
-        e.target.style.backgroundColor = "red";
+        e.target.style.backgroundColor = "#FFFFBF";
+    }
+});
+
+document.addEventListener("mouseout", function(e) {
+    if (e.target.tagName === "DIV") {
+        e.target.style.backgroundColor = "white";
+    }
+});
+
+document.body.addEventListener("mousedown", function(e) {
+    if (e.target.tagName === "DIV") {
+        e.target.style.backgroundColor = "#F29559";
+        e.target.style.width = '10%';
+    }
+});
+
+document.body.addEventListener("mouseup", function(e) {
+    if (e.target.tagName === "DIV") {
+        e.target.style.backgroundColor = "#FFFFBF";
+        e.target.style.width = '10%';
     }
 });
