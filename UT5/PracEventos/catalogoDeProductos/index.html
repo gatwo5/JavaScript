@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    
+    <input type="button" value="Añadir Producto" id="boton_abrir_formulario">
+    <br><br>
+    <div id="formulario_producto">
+        
+        <p>Id del producto:</p>
+        <input type="number" id="id" required>
+
+        <p>Nombre del producto:</p>
+        <input type="text" id="nombre">
+
+        <p>Descripción breve:</p>
+        <input type="text" id="descripcion">
+
+        <p>Precio:</p>
+        <input type="number" id="precio">
+
+        <p>Imágen:</p>
+        <input type="text" id="ruta_imagen">
+        <br><br>
+        <button onclick="agregar_producto()">Añadir</button>
+
+        <p>Mensajes</p>
+        <p id="mensajes"></p>
+
+
+    </div>
+</body>
+</html>
+
+<script src="script.js"></script>

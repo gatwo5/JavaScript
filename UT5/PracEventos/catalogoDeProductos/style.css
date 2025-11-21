@@ -1,0 +1,7 @@
+#formulario_producto {
+    text-align: center;
+    border: 2px solid black;
+    padding: 50px;
+    width: 50%;
+    display: none;
+}
