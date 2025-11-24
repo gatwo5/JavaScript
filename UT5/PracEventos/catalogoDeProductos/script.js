@@ -2,6 +2,7 @@
 
 var productos = [];
 var boton_abrir_formulario = document.querySelector('#boton_abrir_formulario');
+var numero_columnas_grid = 0;
 const MENSAJES = document.getElementById("mensajes");
 
 // mostrar preview de img
@@ -104,8 +105,29 @@ function enviar_error(mensaje_error) {
 }
 
 function actualizar_grid_productos() {
+    let table = document.getElementById("grid");
 
+    // Si no existe una fila abierta, crea una
+    if (numero_columnas_grid === 0) {
+        table.insertAdjacentHTML('afterbegin', "<tr></tr>");
+    }
+
+    // Selecciona la primera fila (la más nueva)
+    let fila = table.querySelector("tr");
+
+    // Añade la celda
+    fila.insertAdjacentHTML('beforeend',
+        '<td><img src="' + productos[productos.length - 1].getRuta_imagen() + '"></td>'
+    );
+
+    numero_columnas_grid++;
+
+    // Si ya hay 5 columnas, resetea para la próxima fila
+    if (numero_columnas_grid === 5) {
+        numero_columnas_grid = 0;
+    }
 }
+
 
 // Click en el botón de añadir producto:
 
