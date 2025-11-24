@@ -4,6 +4,18 @@ var productos = [];
 var boton_abrir_formulario = document.querySelector('#boton_abrir_formulario');
 const MENSAJES = document.getElementById("mensajes");
 
+// mostrar preview de img
+
+const sel = document.getElementById('ruta_imagen');
+const preview = document.getElementById('preview');
+
+
+const actualizarPreview = () => {
+    preview.src = sel.value;
+};
+
+sel.addEventListener('change', actualizarPreview);
+actualizarPreview();
 
 // --- Clase Producto ---
 
