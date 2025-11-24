@@ -25,6 +25,10 @@ class Producto {
 }
 
 function agregar_producto() {
+    document.querySelectorAll("input").forEach(input => {
+        input.style.border = "1px solid black";
+    });
+
 
     id = document.getElementById('id').value;
     nombre = document.getElementById('nombre').value;
@@ -38,18 +42,22 @@ function agregar_producto() {
 
     if (!nombre) {
         mensaje_error = 'Introduce un nombre';
+        document.querySelector('#nombre').style.border = "1px solid red";
     }
 
     else if(!descripcion) {
         mensaje_error = 'Introduce una descripción';
+        document.querySelector('#descripcion').style.border = "1px solid red";
     }
 
     else if(isNaN(precio) || precio < 0) {
         mensaje_error = 'Precio no válido (Debe ser >= 0)';
+        document.querySelector('#precio').style.border = "1px solid red";
     }
 
     else if(!ruta_imagen) {
         mensaje_error = 'Selecciona una imágen';
+        document.querySelector('#ruta_imagen').style.border = "1px solid red";
     }
 
     if (mensaje_error) {
@@ -68,12 +76,13 @@ function agregar_producto() {
         productos.push(producto);
         actualizar_grid_productos();
         mensaje_error = 'Producto creado con éxito';
-        enviar_error(mensaje_error);
+        enviar_error(mensaje_error)
     }
 
     else {
         mensaje_error = 'ID ya existente';
         enviar_error(mensaje_error);
+        document.querySelector('#id').style.border = "1px solid red";
     }
 }
 
