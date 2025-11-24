@@ -34,6 +34,7 @@ class Producto {
     // --- MÉTODOS ---
 
     getId() { return this.id; }
+    getRuta_imagen() { return this.ruta_imagen; }
 }
 
 function agregar_producto() {
