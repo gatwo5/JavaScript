@@ -1,6 +1,8 @@
 // Variables globales
 
 var productos = [];
+var contador_productos = 0;
+
 var boton_abrir_formulario = document.querySelector('#boton_abrir_formulario');
 var numero_columnas_grid = 0;
 const MENSAJES = document.getElementById("mensajes");
@@ -35,7 +37,9 @@ class Producto {
     // --- MÉTODOS ---
 
     getId() { return this.id; }
+    getNombre() {return this.nombre; }
     getRuta_imagen() { return this.ruta_imagen; }
+    toString() {return `id: ${this.id} | nombre: ${this.nombre} | descripcion: ${this.descripcion} | precio: ${this.precio}`}
 }
 
 function agregar_producto() {
@@ -117,9 +121,10 @@ function actualizar_grid_productos() {
 
     // Añade la celda
     fila.insertAdjacentHTML('beforeend',
-        '<td><img src="' + productos[productos.length - 1].getRuta_imagen() + '"></td>'
+        '<td><img src="' + productos[productos.length - 1].getRuta_imagen() + '" alt="' + contador_productos + '" title="' + productos[contador_productos].getNombre() +'"></td>'
     );
 
+    contador_productos++;
     numero_columnas_grid++;
 
     // Si ya hay 5 columnas, resetea para la próxima fila
@@ -135,4 +140,13 @@ boton_abrir_formulario.addEventListener("click", function() {
     formulario = document.querySelector('#formulario_producto');
 
     formulario.style.display = 'block';
+});
+
+// Mostrar datos
+
+document.addEventListener("click", function (e) {
+    if (e.target && e.target.tagName === "IMG") {
+        let indice_imagen = e.target.alt;
+        document.getElementById('informacion_producto').innerHTML = productos[indice_imagen].toString();
+    }
 });
