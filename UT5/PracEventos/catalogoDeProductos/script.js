@@ -131,6 +131,10 @@ function actualizar_grid_productos() {
     if (numero_columnas_grid === 5) {
         numero_columnas_grid = 0;
     }
+
+    // Se muestra el total de productos
+
+    document.getElementById('total_productos').innerHTML = `Total productos: ${contador_productos}`;
 }
 
 
