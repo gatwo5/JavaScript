@@ -1,0 +1,22 @@
+body {
+    display: grid;
+    place-items: center;
+}
+
+#formulario_producto {
+    text-align: center;
+    border: 2px solid black;
+    padding: 50px;
+    width: 50%;
+    display: none;
+}
+
+#grid img {
+    width: 75px;
+    height: 75px;
+    border: 5px solid transparent;
+}
+
+#grid img:hover {
+    border-color: greenyellow;
+}
