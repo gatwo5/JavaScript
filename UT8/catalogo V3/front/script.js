@@ -81,8 +81,45 @@ DOM.btn_agregar_producto.addEventListener("click", async() => {
     DOM.btn_agregar_producto.disabled = true; // Se deshabilita el botón
     DOM.estado_peticion.textContent = "Guardando...";
 
+    // Creamos producto
+
+    let producto = {
+        "id": idVal,
+        "nombre": nombreVal,
+        "descripcion": descripcionVal, 
+        "precio": precioVal,
+        "imagen": imagenVal,
+        "accion": "guardar"
+    };
+
     // Conectarse al servidor y esperar respueseta
+    guardar_producto(producto);
 });
+
+// ======================
+// --- CONEXIONES PHP ---
+// ======================
+
+// Guardar producto
+
+async function guardar_producto(producto) {
+    fetch("api.php", {
+
+        "method": "POST",
+
+        "headers": {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+
+        "body": JSON.stringify(producto)
+
+    }).then(function(response){
+        return response.json();
+
+    }).then(function(data){
+        console.log(data);
+    })
+};
 
 // --- ERRORES ---
 
