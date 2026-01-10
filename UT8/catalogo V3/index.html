@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de productos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Catálogo de productos</h1>
+        <input type="button" value="Añadir nuevo producto" id="btn_abrir_formulario">
+    </header>
+
+    <!-- ========== -->
+    <!-- FORMULARIO -->
+    <!-- ========== -->
+
+    <div id="formulario_producto">
+
+        <h2>Agregar un producto</h2>
+
+        <!-- ID -->
+        <div class="campo_formulario">
+            <label>ID</label>
+            <input type="number" id="id">
+            <span class="texto_error" id="error_id"></span>
+        </div>
+
+        <!-- NOMBRE -->
+        <div class="campo_formulario">
+            <label>Nombre</label>
+            <input type="text" id="nombre">
+            <span class="texto_error" id="error_nombre"></span>
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div class="campo_formulario">
+            <label>Descripción</label>
+            <input type="text" id="descripcion">
+        </div>
+
+        <!-- PRECIO -->
+        <div class="campo_formulario">
+            <label>Precio (€)</label>
+            <input type="number" id="precio" step="0.01" placeholder="0.00">
+            <span class="texto_error" id="error_precio"></span>
+        </div>
+
+        <!-- URL IMAGEN -->
+        <div>
+            <label>URL de imagen</label>
+            <input
+            type="url"
+            id="ruta_imagen"
+            placeholder="https://ejemplo.com/imagen.jpg">
+            <span class="texto_error" id="error_imagen"></span>
+        </div>
+
+        <button id="btn_agregar_producto" onclick="intentarAgregar()">
+            Agregar Producto
+        </button>
+
+        <div id="estado_peticion"></div>
+    </div>
+
+    <!-- ======== -->
+    <!-- CATÁLOGO -->
+    <!-- ======== -->
+
+    <section id="catalogo">
+        <h2>Inventario (<span id="contador_productos">0</span>)</h2>
+        <div id="grid_productos"></div>
+    </section>
+
+    <!-- ================== -->
+    <!-- DETALLES PRODUCTOS -->
+    <!-- ================== -->
+
+    <div id="detalle_productos">
+        <h3>Detalles del Producto</h3>
+        <div id="info_producto">
+            Seleccione un producto para ver detalles.
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
