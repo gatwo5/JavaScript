@@ -32,3 +32,62 @@ DOM.btn_abrir_formulario.addEventListener("click", function(){
         DOM.formulario.style.display = "block";
     }
 });
+
+
+// --- AGREGAR PRODUCTO ---
+
+DOM.btn_agregar_producto.addEventListener("click", function() {
+
+    // Leer y validar campos
+    idVal = parseInt(DOM.id.value);
+    nombreVal = DOM.nombre.value;
+    descripcionVal = DOM.descripcion.value;
+    precioVal = parseFloat(DOM.precio.value);
+    imagenVal = DOM.imagen.value;
+
+    // Validaciones sincronas
+    
+    if (!Number.isInteger(idVal) || isNaN(idVal)) { // Id
+        marcarError(DOM.id, "error_id", "Id inválido (debe ser un número entero)");
+        return;
+    } else {
+        limpiarError(DOM.id, "error_id");
+    }
+
+    if (nombreVal === "") { // Nombre
+        marcarError(DOM.nombre, "error_nombre", "El nombre no puede estar vacío.");
+        return;
+    } else {
+        limpiarError(DOM.nombre, "error_nombre");
+    }
+
+    if (isNaN(precioVal) || precioVal < 0) { // Precio
+        marcarError(DOM.precio, "error_precio", "Precio inválido")
+        return;
+    } else {
+        limpiarError(DOM.precio, "error_precio")
+    }
+});
+
+// --- ERRORES ---
+
+function marcarError(campo, spanId, msg) {
+    campo.style.borderColor = 'red';
+    document.getElementById(spanId).textContent = msg;
+}
+
+function limpiarError(campo, spanId) {
+    campo.style.borderColor = '';
+    document.getElementById(spanId).textContent = '';
+}
+
+// --- VALIDAR IMAGEN ---
+
+function validarImagen(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => reject("La imagen no se puede cargar");
+    img.src = url;
+  });
+}
