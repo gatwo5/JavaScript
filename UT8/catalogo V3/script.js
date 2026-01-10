@@ -36,7 +36,7 @@ DOM.btn_abrir_formulario.addEventListener("click", function(){
 
 // --- AGREGAR PRODUCTO ---
 
-DOM.btn_agregar_producto.addEventListener("click", function() {
+DOM.btn_agregar_producto.addEventListener("click", async() => {
 
     // Leer y validar campos
     idVal = parseInt(DOM.id.value);
@@ -62,11 +62,26 @@ DOM.btn_agregar_producto.addEventListener("click", function() {
     }
 
     if (isNaN(precioVal) || precioVal < 0) { // Precio
-        marcarError(DOM.precio, "error_precio", "Precio inválido")
+        marcarError(DOM.precio, "error_precio", "Precio inválido");
         return;
     } else {
-        limpiarError(DOM.precio, "error_precio")
+        limpiarError(DOM.precio, "error_precio");
     }
+
+    // Comprobar imagen
+
+    try {
+        await validarImagen(imagenVal);
+        limpiarError(DOM.imagen, "error_imagen");
+    } catch (err) {
+        marcarError(DOM.imagen, 'error_imagen', err);
+        return;
+    }
+
+    DOM.btn_agregar_producto.disabled = true; // Se deshabilita el botón
+    DOM.estado_peticion.textContent = "Guardando...";
+
+    // Conectarse al servidor y esperar respueseta
 });
 
 // --- ERRORES ---
