@@ -10,6 +10,9 @@
         case 'listar':
             listar_productos();
             break;
+        case 'buscar_un_producto':
+            buscar_un_producto($producto);
+            break;
     }
 
     // guardar_producto($producto)
@@ -55,7 +58,7 @@
             $conn = conexion();
 
             $stmt = $conn -> prepare(
-                "SELECT id, imagen
+                "SELECT id, nombre, imagen
                 FROM productos"
             );
 
@@ -64,6 +67,35 @@
             $productos = $stmt -> fetchAll();
 
             echo json_encode(["success" => true, "productos" => $productos]);
+        }
+
+        catch (PDOException $e) {
+            echo json_encode(["success" => false, "error" => $e->getMessage()]);
+        }
+
+        $conn = null;
+    }
+
+    // buscar_un_producto()
+    // Devuelve todos los atributos de un producto dado su id
+
+    function buscar_un_producto($producto) {
+        try {
+            $conn = conexion();
+
+            $stmt = $conn -> prepare(
+                "SELECT id, nombre, descripcion, precio, imagen
+                FROM productos
+                WHERE id = :id"
+            );
+
+            $stmt -> bindParam('id', $producto['id']);
+
+            $stmt -> execute();
+            $stmt -> setFetchMode(PDO::FETCH_ASSOC);
+            $detalles_producto = $stmt -> fetchAll();
+
+            echo json_encode(["success" => true, "detalles_producto" => $detalles_producto]);
         }
 
         catch (PDOException $e) {

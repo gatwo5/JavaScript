@@ -108,7 +108,7 @@ DOM.btn_agregar_producto.addEventListener("click", async() => {
 // --- CONEXIONES PHP ---
 // ======================
 
-// Guardar producto
+// --- Guardar producto ---
 
 async function guardar_producto(producto) {
     const response = await fetch("api.php", {
@@ -133,7 +133,7 @@ async function guardar_producto(producto) {
 }
 
 
-// Buscar todos los productos
+// --- BUSCAR TODOS LOS PRODUCTOS ---
 
 async function listar_productos() {
     const response = await fetch("api.php", {
@@ -149,10 +149,59 @@ async function listar_productos() {
     }
 }
 
+// --- BUSCAR UN PRODUCTO POR ID ---
+
+async function buscar_producto(producto) {
+    const response = await fetch("api.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(producto)
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        return data.detalles_producto[0];
+    }
+}
+
+// ==========================
+// --- IMPRIMIR PRODUCTOS ---
+// ==========================
+
+// --- IMPRIMIR TODOS LOS PRODUCTOS ---
 
 function imprimir_productos(productos) {
-    console.log(productos);
-    console.log("esperando...");
+    DOM.grid_productos.innerHTML = '';
+
+    productos.forEach(producto => {
+        card = document.createElement('div');
+        card.className = 'carta_producto';
+        card.innerHTML = `
+            <img src="${producto.imagen}" alt="${producto.id}">
+            <span>${producto.nombre}</span>
+        `;
+        DOM.grid_productos.appendChild(card);
+    });
+
+    // Actualizar el numero de productos
+    contador_productos.innerHTML =  DOM.grid_productos.querySelectorAll('img').length;
+}
+
+// --- IMPRIMIR LOS DETALLES DEL PRODUCTO
+
+function imprimir_detalles_producto(producto) {
+
+    DOM.info_producto.innerHTML = `
+    <h4>${producto.nombre}</h4>
+    <p><b>ID:</b> ${producto.id}</p>
+    <p><b>Precio:</b> ${producto.precio} €</p>
+    <p><b>Descripción:</b> ${producto.descripcion || '—'}</p>
+    <img src="${producto.imagen}" width="80">
+    `;
+
 }
 
 // ===============
@@ -168,6 +217,40 @@ function limpiarError(campo, spanId) {
     campo.style.borderColor = '';
     document.getElementById(spanId).textContent = '';
 }
+
+// ====================================
+// --- CLICK EN IMAGEN DEL PRODUCTO ---
+// ====================================
+
+grid_productos.addEventListener('mousedown', async (e) => {
+
+    if (e.target.tagName === "IMG") {
+
+        // Extrae la ID del producto 
+
+        const id = e.target.alt;
+
+        // Click izquierdo => Mostrar propiedades
+
+        if (e.button === 0) {
+            const id_producto = {
+                "id": id,
+                "accion": "buscar_un_producto"
+            };
+
+            const detalles_producto = await buscar_producto(id_producto);
+
+            imprimir_detalles_producto(detalles_producto);
+        }
+
+        // Click derecho => Eliminar producto
+
+        else if (e.button === 2) {
+            listar_productos();
+        }
+    }
+
+})
 
 // --- VALIDAR IMAGEN ---
 

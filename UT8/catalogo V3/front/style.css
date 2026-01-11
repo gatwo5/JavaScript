@@ -1,3 +1,20 @@
 #formulario_producto {
     display: none;
 }
+
+#grid_productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.carta_producto {
+    position: relative;
+    cursor: pointer;
+    border: 2px solid var(--steel-light);
+    overflow: hidden;
+}
+
+.carta_producto img {width: 100%; display: block;}
