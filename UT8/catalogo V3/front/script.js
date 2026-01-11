@@ -1,4 +1,7 @@
+listar_productos();
+// ===========
 // --- DOM ---
+// ===========
 
 const DOM = {
     // Selectores globales
@@ -81,7 +84,7 @@ DOM.btn_agregar_producto.addEventListener("click", async() => {
     DOM.btn_agregar_producto.disabled = true; // Se deshabilita el botón
     DOM.estado_peticion.textContent = "Guardando...";
 
-    // Creamos producto
+    // Creamos producto como variable
 
     let producto = {
         "id": idVal,
@@ -93,7 +96,12 @@ DOM.btn_agregar_producto.addEventListener("click", async() => {
     };
 
     // Conectarse al servidor y esperar respueseta
-    guardar_producto(producto);
+    const resultado = await guardar_producto(producto);
+
+    // Imprimir los productos 
+    if (resultado.success) {
+        listar_productos();
+    }
 });
 
 // ======================
@@ -103,25 +111,53 @@ DOM.btn_agregar_producto.addEventListener("click", async() => {
 // Guardar producto
 
 async function guardar_producto(producto) {
-    fetch("api.php", {
-
-        "method": "POST",
-
-        "headers": {
+    const response = await fetch("api.php", {
+        method: "POST",
+        headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
+        body: JSON.stringify(producto)
+    });
 
-        "body": JSON.stringify(producto)
+    const data = await response.json();
 
-    }).then(function(response){
-        return response.json();
+    if (data.success) {
+        DOM.estado_peticion.textContent = data.message;
+    } else {
+        marcarError(DOM.id, "error_id", data.error);
+        DOM.estado_peticion.textContent = "";
+    }
 
-    }).then(function(data){
-        console.log(data);
-    })
-};
+    DOM.btn_agregar_producto.disabled = false;
+    return data;
+}
 
+
+// Buscar todos los productos
+
+async function listar_productos() {
+    const response = await fetch("api.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({ accion: "listar" })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        imprimir_productos(data.productos);
+    }
+}
+
+
+function imprimir_productos(productos) {
+    console.log(productos);
+    console.log("esperando...");
+}
+
+// ===============
 // --- ERRORES ---
+// ===============
 
 function marcarError(campo, spanId, msg) {
     campo.style.borderColor = 'red';

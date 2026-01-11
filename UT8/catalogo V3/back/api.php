@@ -7,6 +7,9 @@
         case 'guardar':
             guardar_producto($producto);
             break;
+        case 'listar':
+            listar_productos();
+            break;
     }
 
     // guardar_producto($producto)
@@ -43,6 +46,32 @@
         $conn = null;
     }
 
+    // listar_productos()
+    // Devuelve todos los productos para imprimirlos en javascript
+
+    function listar_productos() {
+
+        try {
+            $conn = conexion();
+
+            $stmt = $conn -> prepare(
+                "SELECT id, imagen
+                FROM productos"
+            );
+
+            $stmt -> execute();
+            $stmt -> setFetchMode(PDO::FETCH_ASSOC);
+            $productos = $stmt -> fetchAll();
+
+            echo json_encode(["success" => true, "productos" => $productos]);
+        }
+
+        catch (PDOException $e) {
+            echo json_encode(["success" => false, "error" => $e->getMessage()]);
+        }
+
+        $conn = null;
+    }
 
     // conexion()
 
