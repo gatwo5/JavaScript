@@ -1,4 +1,6 @@
+//listar todos los productos que ya pudieran existir en la base de datos
 listar_productos();
+
 // ===========
 // --- DOM ---
 // ===========
@@ -33,6 +35,7 @@ DOM.btn_abrir_formulario.addEventListener("click", function(){
 
     else {
         DOM.formulario.style.display = "block";
+        limpiar_formulario();
     }
 });
 
@@ -163,7 +166,27 @@ async function buscar_producto(producto) {
     const data = await response.json();
 
     if (data.success) {
+        DOM.estado_peticion.textContent = "Producto encontrado";
         return data.detalles_producto[0];
+    }
+}
+
+// --- ELIMINAR UN PRODUCTO POR ID ---
+
+async function borrar_producto(producto) {
+    const response = await fetch("api.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(producto)
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        DOM.estado_peticion.textContent = "Producto eliminado";
+        return data;
     }
 }
 
@@ -222,35 +245,65 @@ function limpiarError(campo, spanId) {
 // --- CLICK EN IMAGEN DEL PRODUCTO ---
 // ====================================
 
-grid_productos.addEventListener('mousedown', async (e) => {
+// --- Click izquierdo => Mostar detalles ---
 
+grid_productos.addEventListener('click', async (e) => {
     if (e.target.tagName === "IMG") {
 
-        // Extrae la ID del producto 
+        // Extrae el ID del producto 
 
         const id = e.target.alt;
 
-        // Click izquierdo => Mostrar propiedades
+        const id_producto = {
+            "id": id,
+            "accion": "buscar_un_producto"
+        };
 
-        if (e.button === 0) {
-            const id_producto = {
-                "id": id,
-                "accion": "buscar_un_producto"
-            };
+        const detalles_producto = await buscar_producto(id_producto);
 
-            const detalles_producto = await buscar_producto(id_producto);
+        imprimir_detalles_producto(detalles_producto);
+    }
+});
 
-            imprimir_detalles_producto(detalles_producto);
-        }
+// --- Click derecho => Eliminar producto ---
 
-        // Click derecho => Eliminar producto
+DOM.grid_productos.addEventListener('contextmenu', async (e) => {
+    if (e.target.tagName === "IMG") {
+        e.preventDefault();
 
-        else if (e.button === 2) {
-            listar_productos();
+        const img = e.target;
+        const id = img.alt;
+
+        // Hacer semitransparente la imagen
+        img.style.opacity = '0.5';
+
+        // Delay de 0.5s antes de ejecutar la eliminación
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const id_producto = {
+            "id": id,
+            "accion": "borrar"
+        };
+
+        try {
+            const resultado = await borrar_producto(id_producto);
+
+            if (resultado.success) {
+                listar_productos();
+                DOM.info_producto.innerHTML = ''; // Limpiar detalles
+            } else {
+                // Si falla, restaurar opacidad y mostrar alerta
+                img.style.opacity = '1';
+                alert("Error al eliminar el producto");
+            }
+        } catch (error) {
+            img.style.opacity = '1';
+            alert("Error de comunicación con el servidor: " + error);
         }
     }
+});
 
-})
+
 
 // --- VALIDAR IMAGEN ---
 
@@ -261,4 +314,14 @@ function validarImagen(url) {
     img.onerror = () => reject("La imagen no se puede cargar");
     img.src = url;
   });
+}
+
+// --- LIMPIAR FORMULARIO ---
+
+function limpiar_formulario() {
+    DOM.id.value = '';
+    DOM.nombre.value = '';
+    DOM.descripcion.value = '';
+    DOM.precio.value = '';
+    DOM.imagen.value = '';
 }

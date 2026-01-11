@@ -13,6 +13,9 @@
         case 'buscar_un_producto':
             buscar_un_producto($producto);
             break;
+        case 'borrar':
+            borrar_producto($producto);
+            break;
     }
 
     // guardar_producto($producto)
@@ -100,6 +103,36 @@
 
         catch (PDOException $e) {
             echo json_encode(["success" => false, "error" => $e->getMessage()]);
+        }
+
+        $conn = null;
+    }
+
+    // borrar_producto()
+    // Elimina el producto según su ID
+
+    function borrar_producto($producto) {
+
+        try {
+            $conn = conexion();
+            $conn -> beginTransaction();
+            
+            $stmt = $conn -> prepare(
+                "DELETE FROM productos
+                WHERE id = :id"
+            );
+
+            $stmt -> bindParam('id', $producto['id']);
+
+            $stmt -> execute();
+            $conn -> commit();
+
+            echo json_encode(["success" => true]);
+        }
+
+        catch (PDOException $e) {
+            $conn -> rollBack();
+            echo json_encode(["success" => false]);
         }
 
         $conn = null;
