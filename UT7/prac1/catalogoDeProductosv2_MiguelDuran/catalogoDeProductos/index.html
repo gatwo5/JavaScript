@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    
+    <input type="button" value="Añadir Producto" id="boton_abrir_formulario">
+    <br><br>
+    <div id="formulario_producto">
+        
+        <p>Id del producto:</p>
+        <input type="number" id="id" required>
+
+        <p>Nombre del producto:</p>
+        <input type="text" id="nombre">
+
+        <p>Descripción breve:</p>
+        <input type="text" id="descripcion">
+
+        <p>Precio:</p>
+        <input type="number" id="precio">
+
+        <p>Imágen:</p>
+        
+        <select id="ruta_imagen">
+            <option value="img/medkit.jpeg">Botiquín</option>
+            <option value="img/toolbox.jpeg">Caja de herramientas</option>
+            <option value="img/flashlight.png">Linterna</option>
+            <option value="img/key.jpeg">Llave</option>
+            <option value="img/fogvial.jpeg">Vial de niebla</option>
+        </select>
+
+        <br><br>
+
+        <img id="preview" src="" width="80">
+
+        <br><br>
+        <button onclick="agregar_producto()">Añadir</button>
+
+        <p>Mensajes</p>
+        <p id="mensajes"></p>
+
+    </div>
+
+    <div id="tabla_productos">
+        <h2>Productos</h2>
+        <table id="grid"></table>
+    </div>
+
+    <div id="informacion_producto"></div><br>
+    <div id="total_productos"></div>
+</body>
+</html>
+
+<script src="script.js"></script>
