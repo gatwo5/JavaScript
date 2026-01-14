@@ -1,3 +1,18 @@
+// ===========
+// --- DOM ---
+// ===========
+
+DOM = {
+    coordenadas: document.getElementById("coordenadas"),
+    mapa: document.getElementById("map"),
+    latitud: document.getElementById("latitud"),
+    longitud: document.getElementById("longitud")
+};
+
+// ============
+// --- MAPA ---
+// ============
+
 var map = L.map('map').setView([51.505, -0.09], 13);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -5,17 +20,23 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-var popup = L.popup();
+// =================
+// --- FUNCIONES ---
+// =================
 
-function onMapClick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map);
-
-    coor = document.getElementById("coordenadas");
-    coor.innerHTML = e.latlng.toString();
-
+function hover_mapa(e) {
+    const latitud = e.latlng.lat.toFixed(6);
+    const longitud = e.latlng.lng.toFixed(6);
+    
+    DOM.latitud.innerHTML = `X: ${latitud}`;
+    DOM.longitud.innerHTML = `Y: ${longitud}`;
 }
 
-map.on('mouseover', onMapClick);
+
+
+// ===============
+// --- EVENTOS ---
+// ===============
+
+map.on('mousemove', hover_mapa);
+
