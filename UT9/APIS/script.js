@@ -12,8 +12,11 @@ DOM = {
     coordenadas: document.getElementById("coordenadas"),
     mapa: document.getElementById("map"),
     latitud: document.getElementById("latitud"),
-    longitud: document.getElementById("longitud")
+    longitud: document.getElementById("longitud"),
+    ubicaciones: document.getElementById("ubicaciones")
 };
+
+
 
 // ============
 // --- MAPA ---
@@ -34,8 +37,8 @@ function hover_mapa(e) {
     const latitud = e.latlng.lat.toFixed(6);
     const longitud = e.latlng.lng.toFixed(6);
     
-    DOM.latitud.innerHTML = `X: ${latitud}`;
-    DOM.longitud.innerHTML = `Y: ${longitud}`;
+    DOM.latitud.innerHTML = latitud;
+    DOM.longitud.innerHTML = longitud;
 }
 
 function agregar_marcador(e) {
@@ -62,15 +65,44 @@ function agregar_marcador(e) {
     }
 
     localStorage.setItem('marcadores', JSON.stringify(marcadores));
+
+    // Actualizar canvas
+
+    agregar_ubicacion_canvas();
+}
+
+function agregar_ubicacion_canvas() {
+    marcador = marcadores[marcadores.length - 1];
+
+    ctx.font = "20px Arial";
+    ctx.fillText( orden_marcadores + "º " + [marcador.lat, marcador.lon], 20, 100 + y);
+    y+= 25;
+    orden_marcadores++;
 }
 
 function mostrar_todos_marcadores() {
-
-    console.log(marcadores);
-
     if (marcadores !== null) {
         marcadores.forEach(marcador => {
             L.marker([marcador.lat, marcador.lon]).addTo(map);
+        })
+    }
+}
+
+// ==============
+// --- CANVAS ---
+// ==============
+
+let y = 0;
+let orden_marcadores = 1;
+const ctx = DOM.ubicaciones.getContext("2d");
+
+function mostrar_ubicaciones_canvas() {
+    if (marcadores !== null) {
+        marcadores.forEach(marcador => {
+            ctx.font = "20px Arial";
+            ctx.fillText( orden_marcadores + "º " + [marcador.lat, marcador.lon], 20, 100 + y);
+            y+= 25;
+            orden_marcadores++;
         })
     }
 }
@@ -88,3 +120,4 @@ map.on('click', agregar_marcador);
 // ===========================
 
 mostrar_todos_marcadores();
+mostrar_ubicaciones_canvas()
